@@ -65,21 +65,14 @@ function checksTodoExists(request, response, next) {
 
 function findUserById(request, response, next) {
   const { id } = request.params;
-  const { username } = request.headers;
-
-  const user = users.find(user => user.username === username)
-
-  if(user.username !== username) {
-    return response.status(404).json({ error: "User not exists!" })
-  }
   
   const idExist = users.find(user => user.id)
 
-  if(id !== idExist.id) {
+  if(!idExist) {
     return response.status(404).json({ error: "ID not found!" })
   }
 
-  request.user = user;
+  request.user = idExist;
 
   return next();
 
